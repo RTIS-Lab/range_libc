@@ -548,6 +548,8 @@ namespace ranges {
 					r = std::min<float>(std::max<float>(r,0.0),(float)sensor_model.size()-1.0);
 					d = ranges[i*rays_per_particle+j] * inv_world_scale;
 					d = std::min<float>(std::max<float>(d,0.0),(float)sensor_model.size()-1.0);
+					// printf("obs[%d] = %f\t, ranges[%d] = %f\n", j, obs[j], i*rays_per_particle+j, ranges[i*rays_per_particle+j]);
+					// printf("sensor_model[%d][%d] = %f\n", (int)r, (int)d, sensor_model[(int)r][(int)d]);
 					weight *= sensor_model[(int)r][(int)d];
 				}
 				outs[i] = weight;
@@ -1720,7 +1722,7 @@ namespace ranges {
 					(*ss) << J3 << "\"theta\": " << angle << "," << std::endl;
 					(*ss) << J3 << "\"zeros\": [";
 
-					for (int j = 0; j < compressed_lut[i].size(); ++j) {
+					for (uint j = 0; j < compressed_lut[i].size(); ++j) {
 						if (j > 0) (*ss) << ","; 
 						utils::serialize(compressed_lut[i][j], ss);
 					}
@@ -1788,9 +1790,9 @@ namespace ranges {
 			RayMarching seed_cast = RayMarching(m, mr);
 			// CDDTCast seed_cast = CDDTCast(m, mr, td);
 
-			for (int x = 0; x < m.width; ++x) {
+			for (uint x = 0; x < m.width; ++x) {
 				std::vector<std::vector<lut_t> > lut_slice;
-				for (int y = 0; y < m.height; ++y) {
+				for (uint y = 0; y < m.height; ++y) {
 					std::vector<lut_t> lut_row;
 					for (int i = 0; i < theta_discretization; ++i) {
 						#if _USE_CACHED_CONSTANTS

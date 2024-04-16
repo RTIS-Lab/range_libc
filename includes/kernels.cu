@@ -16,6 +16,7 @@ __device__ float distance(int x, int y, float *distMap, int width, int height) {
 	return distMap[x * height + y];
 }
 
+// profile this with nprof
 __global__ void cuda_ray_marching(float * ins, float * outs, float * distMap, int width, int height, float max_range, int num_casts) {
 	int ind = blockIdx.x*blockDim.x + threadIdx.x;
 	if (ind >= num_casts) return; 

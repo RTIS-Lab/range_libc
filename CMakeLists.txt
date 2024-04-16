@@ -2,12 +2,13 @@ PROJECT(range_lib)
 
 # cmake_minimum_required(VERSION 2.8.0)
 cmake_minimum_required(VERSION 3.3)
+find_package(ament_cmake REQUIRED)
 
 file(GLOB SRCS 
 	main.cpp 
 	"vendor/lodepng/lodepng.cpp" )
 
-option(WITH_CUDA "Compile CUDA ray cast varients" ON)
+option(WITH_CUDA "Compile CUDA ray cast varients" OFF)
 # set(CHUNK_SIZE 16384)
 # set(CHUNK_THREADS 256)
 set(CHUNK_SIZE 262144)
@@ -70,3 +71,18 @@ endif()
 
 
 target_link_libraries(range_lib gflags pthread)
+
+# install lib and include
+install(TARGETS range_lib
+  DESTINATION lib/${PROJECT_NAME}
+)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/includes/
+  DESTINATION includes/
+)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/vendor/
+  DESTINATION includes/vendor/
+)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/vendor/
+  DESTINATION vendor/
+)
+ament_package()
